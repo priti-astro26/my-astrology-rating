@@ -1,41 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feedback Details</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 20px;
-            background: #f9f9f9;
-        }
-        .container {
-            background: white;
-            padding: 20px;
-            max-width: 400px;
-            margin: auto;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-        h2 { color: #333; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>😊 Your Feedback</h2>
-        <p><b>Name:</b> <span id="userName"></span></p>
-        <p><b>Rating:</b> <span id="rating"></span> stars</p>
-        <p><b>Experience:</b> <span id="feedback"></span></p>
-    </div>
-
-    <script>
-        // Extract feedback details from the URL
-        const params = new URLSearchParams(window.location.search);
-        document.getElementById("userName").innerText = params.get("name") || "No Name Provided";
-        document.getElementById("rating").innerText = params.get("rating") || "No Rating";
-        document.getElementById("feedback").innerText = params.get("feedback") || "No Feedback Provided";
-    </script>
-</body>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Feedback Details</title>
+      <style>
+         body {
+         font-family: Arial, sans-serif;
+         text-align: center;
+         margin: 20px;
+         background: #f9f9f9;
+         }
+         .rating-container {
+         background: white;
+         padding: 20px;
+         max-width: 400px;
+         margin: auto;
+         border-radius: 10px;
+         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+         }
+         #thankYouMessage {
+         color: green;
+         font-size: 18px;
+         margin-top: 15px;
+         display: none;
+         }
+         /* Style for feedback summary */
+         #feedbackSummary {
+         display: none;
+         text-align: left;
+         margin-top: 20px;
+         padding: 15px;
+         background: #e8f5e9;
+         border-left: 5px solid green;
+         font-size: 16px;
+         border-radius: 5px;
+         }
+      </style>
+   </head>
+   <body>
+      <div class="rating-container">
+         <h2>🌠 Rate Your Astrology Experience</h2>
+         <!-- Thank You Message -->
+         <p id="thankYouMessage"></p>
+         <!-- Feedback Summary -->
+         <div id="feedbackSummary"></div>
+      </div>
+      <script>
+         // Extract feedback details from the URL
+         const params = new URLSearchParams(window.location.search);
+         const userName = params.get("name") || "No Name Provided";
+         const selectedRating = params.get("rating") || "No Rating";
+         const feedback = params.get("feedback") || "No Feedback Provided";
+         
+         // Show the thank-you message with user's name
+         const thankYouMessage = document.getElementById("thankYouMessage");
+         thankYouMessage.innerHTML = `🎉 Thank you, <b>${userName}</b>, for your feedback!`;
+         thankYouMessage.style.display = "block";
+         
+         // Display feedback summary
+         const feedbackSummary = document.getElementById("feedbackSummary");
+         feedbackSummary.innerHTML = `
+             <h3>Your Feedback 😊</h3>
+             <p><b>Rating:</b> ${"★".repeat(selectedRating)} (${selectedRating} stars)</p>
+             <p><b>Experience:</b> ${feedback}</p>
+         `;
+         feedbackSummary.style.display = "block";
+      </script>
+   </body>
 </html>
