@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background: #f9f9f9;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            max-width: 400px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 { color: #333; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>😊 Your Feedback</h2>
+        <p><b>Name:</b> <span id="userName"></span></p>
+        <p><b>Rating:</b> <span id="rating"></span> stars</p>
+        <p><b>Experience:</b> <span id="feedback"></span></p>
+    </div>
+
+    <script>
+        // Extract feedback details from the URL
+        const params = new URLSearchParams(window.location.search);
+        document.getElementById("userName").innerText = params.get("name") || "No Name Provided";
+        document.getElementById("rating").innerText = params.get("rating") || "No Rating";
+        document.getElementById("feedback").innerText = params.get("feedback") || "No Feedback Provided";
+    </script>
+</body>
+</html>
