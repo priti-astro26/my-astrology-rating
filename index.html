@@ -89,7 +89,7 @@
          <h2>🌠 Rate Your Astrology Experience</h2>
          <!-- User Info -->
          <div id="inputFields">
-            <input type="text" id="userName" placeholder="Enter your name">
+            <input type="text" id="userName" placeholder="Enter your name" oninput="hideError('nameError')"> 
             <p class="error" id="nameError">⚠ Please enter your name.</p>
             <!-- Star Rating -->
             <div class="stars">
@@ -101,7 +101,7 @@
             </div>
             <p class="error" id="ratingError">⚠ Please select a rating.</p>
             <!-- Feedback Textarea -->
-            <textarea id="feedback" placeholder="Share your experience..."></textarea>
+            <textarea id="feedback" placeholder="Share your experience..." oninput="hideError('feedbackError')"></textarea>
             <p class="error" id="feedbackError">⚠ Please share your experience before submitting.</p>
          </div>
          <!-- Submit Button -->
@@ -136,6 +136,10 @@
                        document.getElementById("ratingError").style.display = "none";
                    });
                });
+
+               function hideError(errorId) {
+			         document.getElementById(errorId).style.display = "none";
+		         }
          
                function submitRating() {
                    const userName = document.getElementById("userName").value.trim();
@@ -184,8 +188,8 @@
                    // Hide the input fields after submission
                    document.getElementById("inputFields").style.display = "none";
          
-                   // Disable the submit button
-                   document.getElementById("submitBtn").disabled = true;
+                   // Hide the submit button after submission
+                   document.getElementById("submitBtn").style.display = "none";
          
                    // Display feedback summary
                    const feedbackSummary = document.getElementById("feedbackSummary");
@@ -204,9 +208,6 @@
            emailjs.send("service_2025", "template_f43hm7u", emailParams)
            .then(() => {
          console.log("✅ Email sent successfully!");
-         
-         // Redirect user to the feedback page
-         window.location.href = responseUrl;
             })
            .catch((error) => {
          console.error("❌ EmailJS Error:", error);
