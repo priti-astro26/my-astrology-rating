@@ -148,7 +148,7 @@
         function submitRating() {
             const userName = document.getElementById("userName").value.trim();
             const feedback = document.getElementById("feedback").value.trim();
-			const responseUrl = `https://yourwebsite.com/view-feedback.html?name=${encodeURIComponent(userName)}&rating=${selectedRating}&feedback=${encodeURIComponent(feedback)}`;
+			const responseUrl = `https://priti-astro26.github.io/my-astrology-rating/view-feedback.html?name=${encodeURIComponent(userName)}&rating=${selectedRating}&feedback=${encodeURIComponent(feedback)}`;
             let isValid = true;
 
             // Validate Name
@@ -177,7 +177,7 @@
 
             if (!isValid) return; // Stop submission if validation fails
 			
-				const emailParams = {
+		const emailParams = {
                 userName: userName,
                 rating: selectedRating,
                 feedback: feedback,
@@ -194,9 +194,6 @@
 
             // Disable the submit button
             document.getElementById("submitBtn").disabled = true;
-			
-			document.getElementById("inputFields").style.display = "none";
-            document.getElementById("submitBtn").disabled = true;
 
             // Display feedback summary
             const feedbackSummary = document.getElementById("feedbackSummary");
@@ -211,15 +208,15 @@
             console.log("Rating Submitted:", selectedRating);
             console.log("Feedback:", feedback);
 			
-			// Send email asynchronously
-			emailjs.send("service_2025", "template_f43hm7u", emailParams)
-			.then(() => {
-				console.log("✅ Email sent successfully!");
-			})
-			.catch((error) => {
-				console.error("❌ EmailJS Error:", error);
-				alert("Something went wrong. Please try again.");
-			});
+	   // Send email asynchronously
+	   emailjs.send("service_2025", "template_f43hm7u", emailParams)
+	   .then(() => {
+		console.log("✅ Email sent successfully!");
+	    })
+	   .catch((error) => {
+		console.error("❌ EmailJS Error:", error);
+		alert("Something went wrong. Please try again.");
+	    });
         }
     </script>
 
