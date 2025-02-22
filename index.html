@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astrology Rating Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .rating-container {
+            background: white;
+            padding: 20px;
+            max-width: 400px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .stars {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 30px;
+        }
+        .star {
+            color: gray;
+            transition: color 0.3s;
+        }
+        .star.active {
+            color: gold;
+        }
+        input, textarea {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            border: none;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button:disabled {
+            background: gray;
+            cursor: not-allowed;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #thankYouMessage {
+            color: green;
+            font-size: 18px;
+            margin-top: 15px;
+            display: none;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            display: none;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="rating-container">
+        <h2>🌠 Rate Your Astrology Experience</h2>
+
+        <!-- User Info -->
+        <div id="inputFields">
+            <input type="text" id="userName" placeholder="Enter your name">
+            <p class="error" id="nameError">⚠ Please enter your name.</p>
+
+            <!-- Star Rating -->
+            <div class="stars">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+            </div>
+            <p class="error" id="ratingError">⚠ Please select a rating.</p>
+
+            <!-- Feedback Textarea -->
+            <textarea id="feedback" placeholder="Share your experience..."></textarea>
+            <p class="error" id="feedbackError">⚠ Please share your experience before submitting.</p>
+        </div>
+
+        <!-- Submit Button -->
+        <button id="submitBtn" onclick="submitRating()">Submit</button>
+
+        <!-- Thank You Message -->
+        <p id="thankYouMessage"></p>
+    </div>
+
+    <script>
+        let selectedRating = 0;
+        const stars = document.querySelectorAll(".star");
+
+        // Handle star selection
+        stars.forEach(star => {
+            star.addEventListener("click", function() {
+                selectedRating = parseInt(this.getAttribute("data-value"));
+                
+                // Remove active class from all stars
+                stars.forEach(s => s.classList.remove("active"));
+                
+                // Add active class up to the selected rating
+                for (let i = 0; i < selectedRating; i++) {
+                    stars[i].classList.add("active");
+                }
+
+                // Hide rating error when selected
+                document.getElementById("ratingError").style.display = "none";
+            });
+        });
+
+        function submitRating() {
+            const userName = document.getElementById("userName").value.trim();
+            const feedback = document.getElementById("feedback").value.trim();
+            let isValid = true;
+
+            // Validate Name
+            if (userName === "") {
+                document.getElementById("nameError").style.display = "block";
+                isValid = false;
+            } else {
+                document.getElementById("nameError").style.display = "none";
+            }
+
+            // Validate Rating Selection
+            if (selectedRating === 0) {
+                document.getElementById("ratingError").style.display = "block";
+                isValid = false;
+            } else {
+                document.getElementById("ratingError").style.display = "none";
+            }
+
+            // Validate Feedback Input
+            if (feedback === "") {
+                document.getElementById("feedbackError").style.display = "block";
+                isValid = false;
+            } else {
+                document.getElementById("feedbackError").style.display = "none";
+            }
+
+            if (!isValid) {
+                return; // Stop submission if validation fails
+            }
+
+            // Show the thank-you message with user's name
+            const thankYouMessage = document.getElementById("thankYouMessage");
+            thankYouMessage.innerHTML = `🎉 Thank you, <b>${userName}</b>, for your feedback! You rated us <b>${selectedRating} stars</b>.`;
+            thankYouMessage.style.display = "block";
+
+            // Hide the input fields after submission
+            document.getElementById("inputFields").style.display = "none";
+
+            // Disable the submit button
+            document.getElementById("submitBtn").disabled = true;
+
+            console.log("User:", userName);
+            console.log("Rating Submitted:", selectedRating);
+            console.log("Feedback:", feedback);
+        }
+    </script>
+
+</body>
+</html>
