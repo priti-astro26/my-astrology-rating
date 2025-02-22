@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Astrology Rating Form</title>
+	<!-- EmailJS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -34,7 +36,7 @@
             color: gold;
         }
         input, textarea {
-            width: 100%;
+            width: 90%;
             margin-top: 10px;
             padding: 10px;
             border-radius: 5px;
@@ -69,6 +71,17 @@
             display: none;
             margin-top: 5px;
         }
+        /* Style for feedback summary */
+        #feedbackSummary {
+            display: none;
+            text-align: left;
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f5e9;
+            border-left: 5px solid green;
+            font-size: 16px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -101,9 +114,16 @@
 
         <!-- Thank You Message -->
         <p id="thankYouMessage"></p>
+
+        <!-- Feedback Summary -->
+        <div id="feedbackSummary"></div>
     </div>
 
     <script>
+		document.addEventListener("DOMContentLoaded", function () {
+            emailjs.init("iSnViAqMIssRFtb-O"); // Replace with your EmailJS public key
+        });
+		
         let selectedRating = 0;
         const stars = document.querySelectorAll(".star");
 
@@ -128,6 +148,7 @@
         function submitRating() {
             const userName = document.getElementById("userName").value.trim();
             const feedback = document.getElementById("feedback").value.trim();
+			const responseUrl = `https://yourwebsite.com/view-feedback.html?name=${encodeURIComponent(userName)}&rating=${selectedRating}&feedback=${encodeURIComponent(feedback)}`;
             let isValid = true;
 
             // Validate Name
@@ -154,13 +175,18 @@
                 document.getElementById("feedbackError").style.display = "none";
             }
 
-            if (!isValid) {
-                return; // Stop submission if validation fails
-            }
+            if (!isValid) return; // Stop submission if validation fails
+			
+				const emailParams = {
+                userName: userName,
+                rating: selectedRating,
+                feedback: feedback,
+                responseUrl: responseUrl
+            };
 
             // Show the thank-you message with user's name
             const thankYouMessage = document.getElementById("thankYouMessage");
-            thankYouMessage.innerHTML = `🎉 Thank you, <b>${userName}</b>, for your feedback! You rated us <b>${selectedRating} stars</b>.`;
+            thankYouMessage.innerHTML = `🎉 Thank you, <b>${userName}</b>, for your feedback!`;
             thankYouMessage.style.display = "block";
 
             // Hide the input fields after submission
@@ -168,10 +194,32 @@
 
             // Disable the submit button
             document.getElementById("submitBtn").disabled = true;
+			
+			document.getElementById("inputFields").style.display = "none";
+            document.getElementById("submitBtn").disabled = true;
+
+            // Display feedback summary
+            const feedbackSummary = document.getElementById("feedbackSummary");
+            feedbackSummary.innerHTML = `
+                <h3>Your Feedback 😊</h3>
+                <p><b>Rating:</b> ${"★".repeat(selectedRating)} (${selectedRating} stars)</p>
+                <p><b>Experience:</b> ${feedback}</p>
+            `;
+            feedbackSummary.style.display = "block";
 
             console.log("User:", userName);
             console.log("Rating Submitted:", selectedRating);
             console.log("Feedback:", feedback);
+			
+			// Send email asynchronously
+			emailjs.send("service_2025", "template_f43hm7u", emailParams)
+			.then(() => {
+				console.log("✅ Email sent successfully!");
+			})
+			.catch((error) => {
+				console.error("❌ EmailJS Error:", error);
+				alert("Something went wrong. Please try again.");
+			});
         }
     </script>
 
